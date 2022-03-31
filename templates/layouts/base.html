@@ -1,0 +1,134 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGE %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ request.page_title }}</title>
+
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+</head>
+
+<body>
+
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg navbar-light border-bottom bg-warning rounded">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'main:index' %}">Newsportal</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'index' %} active{% endif %}"
+                               aria-current="page" href="{% url 'main:index' %}">{% translate "Bosh sahifa" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'rasm' %} active{% endif %}"
+                               href="{% url 'main:rasm' %}">{% translate "Rasm" %}</a>
+                        </li>
+                        {% for row in categories %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.resolver_match.url_name == 'cat' and row.id == category.id %} active{% endif %}"
+                                   href="{% url 'main:cat' row.id %}">{{ row.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item" style="padding-top: 5px">
+                            <a class="btn btn-outline-dark btn-sm rounded-3 {% if request.resolver_match.url_name == 'add-post' %} active{% endif %}"
+                               href="{% url 'main:add-post' %}">
+                                <i class="bi-plus-circle"></i>
+                                {% translate "Maqola qo'shish" %}
+                            </a>
+                        </li>
+                    {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'account' and request.resolver_match.url_name == 'registration' %} active{% endif %}"
+                               href="{% url 'account:registration' %}">{% translate "Ro'yxatdan o'tish" %}</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                         <li class="nav-item">
+                            <a class="nav-link " href="{% url 'account:logout' %}">{% translate "Chiqish" %} ({{ user.username }})</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link " href="#id-login-modal" data-bs-toggle="modal">{% translate "Tizimga kirish" %}</a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="dropdown-toggle btn btn-secondary">
+                                {% for l in LANGUAGE %}{% if l.0 == LANGUAGE_CODE %}{{ l.1 }}{% endif %}{% endfor %}
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for l in LANGUAGE %}
+                                    <a href="/{{ l.0 }}/" class="dropdown-item">{{ l.1 }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mt-3">
+            {% for m in messages %}
+                <div class="alert {{ m.tags }} alert-dismissible fade show">
+                    {{ m }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert">&times;</button>
+                </div>
+            {% endfor %}
+
+            {% if request.breadcrumb %}
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'main:index' %}">{% translate "Bosh sahifa" %}</a></li>
+                        {% for item in request.breadcrumb %}
+                            <li class="breadcrumb-item active" aria-current="page">{{ item }}</li>
+                        {% endfor %}
+                    </ol>
+                </nav>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <div class="sticky-top bg-warning p-5 footer">
+        <div class="container text-white">
+            &copy; {% now "Y" %}
+        </div>
+    </div>
+
+    {% include 'widgets/login-modal.html' %}
+
+
+    <script src="{% static 'vendor/jquery-3.6.0.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.js' %}"></script>
+    <script>
+        setTimeout(() => {
+            $(".alert").removeClass("show");
+            setTimeout(() => {
+                $(".alert").removeClass();
+            }, 300)
+        }, 2000);
+
+        {% if request.GET.modal %}
+            (new bootstrap.Modal(document.getElementById('id-login-modal'))).show()
+        {% endif %}
+    </script>
+
+</body>
+
+</html>

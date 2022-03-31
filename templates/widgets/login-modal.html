@@ -1,0 +1,19 @@
+{% load crispy_forms_filters i18n %}
+<div class="modal" tabindex="-1" id="id-login-modal">
+  <form class="modal-dialog" action="{% url 'account:login' %}" method="post">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{% translate "Tizimga kirish" %}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          {% csrf_token %}
+          {{ LOGIN_FORM|crispy }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% translate "Orqaga" %}</button>
+        <button type="submit" class="btn btn-primary">{% translate "Tizimga kirish" %}</button>
+      </div>
+    </div>
+  </form>
+</div>

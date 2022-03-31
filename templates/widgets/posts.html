@@ -1,0 +1,6 @@
+<h3 class="mt-5 text-center bg-warning rounded-3">{{ header }}</h3>
+<div class="row">
+{% for row in posts %}
+    {% include 'widgets/post.html' with item=row %}
+{% endfor %}
+</div>

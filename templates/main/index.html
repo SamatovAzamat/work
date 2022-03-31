@@ -1,0 +1,49 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+    {% if carousel|length > 0 %}
+    <div id="slideshow" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            {% for row in carousel %}
+                {{ index }}
+            <button type="button" data-bs-target="#slideshow" data-bs-slide-to="{{ forloop.counter0 }}"
+                    class="{% if forloop.counter0 == 0 %}active{% endif %}"></button>
+            {% endfor %}
+        </div>
+        <div class="carousel-inner rounded-3">
+            {% for row in carousel %}
+            <div class="carousel-item {% if forloop.counter0 == 0 %}active{% endif %}">
+                <img src="{{ row.image.url }}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    {% if row.header %}
+                    <h5>{{ row.header }}</h5>
+                    {% endif %}
+                    {% if row.comment %}
+                    <p>{{ row.comment }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#slideshow"
+                data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#slideshow"
+                data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+    {% include "widgets/posts.html" with posts=last_posts header="Oxirgi yangiliklar" %}
+    {% include "widgets/posts.html" with posts=top_like header="Eng ko'p like olgan yangiliklar" %}
+    {% include "widgets/posts.html" with posts=top_dislike header="Eng ko'p dislike olgan yangiliklar" %}
+    {% include "widgets/posts.html" with posts=top_read header="Eng ko'p o'qilgan yangiliklar" %}
+
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n %}
+{% block content %}
+
+    <a href="/">{% translate "Orqaga" %}</a>
+{#    <img src="/static/img/goo.jpg" alt="" width="1000px">#}
+    <img src="{% static 'img/goo.jpg' %}" alt="" width="1000px">
+
+{% endblock %}

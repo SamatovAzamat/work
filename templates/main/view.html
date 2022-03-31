@@ -1,0 +1,21 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            <h1>{{ post.subject_ru }}</h1>
+            <div>
+                {{ post.content_ru }}
+            </div>
+        </div>
+        <div class="col-lg-3">
+            {% for row in posts %}
+                <div class="mb-3">
+                    {% include 'widgets/post-info.html' with item=row hauto=false %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'layouts/base.html' %}
+{% load static i18n %}
+{% load bootstrap_pagination %}
+
+{% block content %}
+    <div class="row">
+        {% for item in object_list %}
+            {% include 'widgets/post.html' %}
+        {% empty %}
+            <h1>Ushbu sahifada malumot mavjud emas.</h1>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    {% bootstrap_paginate page_obj %}
+    {% endif %}
+
+{% endblock %}
+

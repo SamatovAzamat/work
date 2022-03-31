@@ -1,0 +1,43 @@
+html, body {
+    font-size: 16px;
+}
+
+.nav-link {
+    position: relative;
+}
+
+.nav-link.active:after,
+.nav-link:after {
+    content:"";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: -3px;
+    height: 3px;
+    background: black;
+    transition: right 0.2s linear;
+}
+
+.nav-link.active:after,
+.nav-link:hover:after {
+    right:0;
+}
+
+.post-img {
+    max-width: 100px;
+    max-height: 100px;
+}
+
+.main-content {
+    min-height: calc(100vh - 120px);
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block !important;
+}
+
+.post-tag {
+    right: 10px;
+    top: 10px;
+}
+
